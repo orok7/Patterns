@@ -1,4 +1,4 @@
-package patterns.bridge;
+package patterns.bridge.badexample;
 
 public class Circle extends Shape {
 	private int x, y, radius;
@@ -11,6 +11,6 @@ public class Circle extends Shape {
 	}
 
 	public void draw() {
-		drawAPI.drawCircle(radius, x, y);
+		drawAPI.draw(radius, x, y);
 	}
 }

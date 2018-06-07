@@ -1,4 +1,4 @@
-package patterns.bridge;
+package patterns.bridge.badexample;
 
 public abstract class Shape {
 	protected DrawAPI drawAPI;
