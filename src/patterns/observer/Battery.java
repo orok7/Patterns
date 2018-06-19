@@ -1,7 +1,5 @@
 package patterns.observer;
 
-import lombok.Getter;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,25 +45,19 @@ public class Battery implements IObservable{
     public void connectToCharger() {
         connectedToCharger = true;
         notifyObservers();
-        Thread thread = new Thread(charging);
-        thread.setDaemon(true);
-        thread.start();
+        runNewThread(charging);
     }
 
     public void disconnectFromCharger() {
         connectedToCharger = false;
         notifyObservers();
-        Thread thread = new Thread(uncharging);
-        thread.setDaemon(true);
-        thread.start();
+        runNewThread(uncharging);
     }
 
     public void turnOn() {
         turnedOn = true;
         notifyObservers();
-        Thread thread = new Thread(uncharging);
-        thread.setDaemon(true);
-        thread.start();
+        runNewThread(uncharging);
     }
 
     public void turnOff() {
@@ -86,6 +78,12 @@ public class Battery implements IObservable{
     @Override
     public void notifyObservers() {
         observers.parallelStream().forEach(IObserver::update);
+    }
+
+    private void runNewThread(Runnable target) {
+        Thread thread = new Thread(target);
+        thread.setDaemon(true);
+        thread.start();
     }
 
     public int getCharged() {
