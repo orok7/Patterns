@@ -1,4 +1,4 @@
-package collections.tree;
+package collections.tree.bitree;
 
 import lombok.EqualsAndHashCode;
 

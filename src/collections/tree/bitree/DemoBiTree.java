@@ -1,4 +1,4 @@
-package collections.tree;
+package collections.tree.bitree;
 
 import java.util.Arrays;
 import java.util.Comparator;
