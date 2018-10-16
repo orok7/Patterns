@@ -1,7 +1,5 @@
 package notpatternslearning.multithread.tasksfromweb;
 
-import org.junit.Test;
-
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
@@ -27,7 +25,6 @@ public class WaitTutor {
         }
     });
 
-    @Test
     public void testThread() {
         Thread t1 = new Thread(new TestThread("t1", 1));
         Thread t2 = new Thread(new TestThread("t2", 2));

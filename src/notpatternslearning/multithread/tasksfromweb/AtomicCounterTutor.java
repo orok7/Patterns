@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.junit.Test;
-
 /**
  * Есть счетчик, подсчитывающий количество вызовов.
  *
@@ -34,7 +32,6 @@ public class AtomicCounterTutor {
         }
     }
 
-    @Test
     public void testThread() {
         List<Thread> threads = new ArrayList<Thread>();
         for (int i=0;i<100;i++) {

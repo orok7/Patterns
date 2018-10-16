@@ -1,13 +1,12 @@
 package notpatternslearning.multithread.tasksfromweb;
 
 import notpatternslearning.multithread.try1.MyThread;
-import org.junit.Test;
 
 /*
         * Как остановить поток?
         *
         * Для того, чтобы прервать поток, мы можем использовать флаг
-        * shouldTerminate, который должен проверяться в цикле внутри run().
+        * shouldTerminate, который должен проверяться в цикле внутри handle().
         * Если флаг становится true, мы просто выходим из цикла.
         *
         * Однако, тут могут быть проблемы, если от нашего потока зависят другие потоки.
@@ -19,7 +18,6 @@ public class WaitTerminateTutor {
     private final Object monitor = new Object();
     private int runningThreadNumber = 1;
 
-    @Test
     public void testThread() {
         TestThread testThread1 = new TestThread("t1");
         Thread t1 = new Thread(testThread1);
