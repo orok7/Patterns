@@ -8,6 +8,7 @@ public class FileManager {
     public FileManager() {
         this.root = new SomeFile(ROOT_NAME, null, true);
         this.currentDir = root;
+        printHeader();
     }
 
     public void newFile(String fileName) {
@@ -59,6 +60,13 @@ public class FileManager {
     }
 
     public void changeDir(String path) {
+        if (path.equals("..")) {
+            SomeFile root = currentDir.getRoot();
+            if (root != null) {
+                currentDir = root;
+            }
+            return;
+        }
         SomeFile found = parsePath(path);
         if (found == null) {
             found = parsePath(currentDir.getPath() + "/" + path);
@@ -68,11 +76,9 @@ public class FileManager {
             }
         }
         currentDir = found;
-        print("");
     }
 
     public void list() {
-        print("");
         currentDir.printList();
     }
 
@@ -113,11 +119,11 @@ public class FileManager {
         return fileByName.isDirectory() ? "Directory" : "File";
     }
 
-    private String getHeader() {
-        return currentDir.getPath() + "> ";
+    public void printHeader() {
+        System.out.print(currentDir.getPath() + "> ");
     }
 
     private void print(String s) {
-        System.out.println(getHeader() + s);
+        System.out.println(s);
     }
 }

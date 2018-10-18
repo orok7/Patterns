@@ -9,13 +9,17 @@ public class NewFileCom implements Command {
 
     @Override
     public void execute(String[] args) {
-        if (args != null && args.length > 0) {
+        if (args != null && args.length == 1) {
             fileManager.newFile(args[0]);
+            fileManager.printHeader();
+        } else {
+            fileManager.printHeader();
+            throw new IllegalArgumentException();
         }
     }
 
     @Override
-    public void undo() {
-
+    public void undo(String[] args) {
+        new RemoveCom(fileManager).execute(args);
     }
 }

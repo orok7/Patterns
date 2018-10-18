@@ -1,7 +1,7 @@
 package patterns.command;
 
 public interface Command {
-    void execute(String[] args);
+    void execute(String[] args) throws IllegalArgumentException;
 
-    void undo();
+    void undo(String[] args);
 }

@@ -1,16 +1,16 @@
 package patterns.command;
 
-public class NewDirCom implements Command {
+public class ChangeDirCom implements Command {
     private FileManager fileManager;
 
-    public NewDirCom(FileManager fileManager) {
+    public ChangeDirCom(FileManager fileManager) {
         this.fileManager = fileManager;
     }
 
     @Override
     public void execute(String[] args) {
         if (args != null && args.length == 1) {
-            fileManager.newDirectory(args[0]);
+            fileManager.changeDir(args[0]);
             fileManager.printHeader();
         } else {
             fileManager.printHeader();
@@ -19,7 +19,5 @@ public class NewDirCom implements Command {
     }
 
     @Override
-    public void undo(String[] args) {
-        new RemoveCom(fileManager).execute(args);
-    }
+    public void undo(String[] args) {}
 }
