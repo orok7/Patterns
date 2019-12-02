@@ -47,7 +47,7 @@ public class DependencyInjectorImpl implements DependencyInjector {
         Class<?>[] classes;
         try {
             classes = ClassUtils.getClasses(packageName);
-        } catch (ClassNotFoundException | IOException e) {
+        } catch (IOException e) {
             throw new ClassNotFoundException("ClassUtil Exception\n", e);
         }
         scanAutoInjectAnnotations(classes);
