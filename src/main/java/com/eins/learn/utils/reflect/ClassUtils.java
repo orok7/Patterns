@@ -1,4 +1,4 @@
-package com.eins.learn.utils.depinject.core;
+package com.eins.learn.utils.reflect;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,7 +23,7 @@ public class ClassUtils {
 		return list;
 	}
 
-	public static Class<?>[] getClasses(String packageName) throws ClassNotFoundException, IOException {
+	public static Class<?>[] getClasses(String packageName) throws IOException {
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		String path = packageName.replace('.', '/');
 		Enumeration<URL> resources = classLoader.getResources(path);
