@@ -4,8 +4,8 @@ import java.util.concurrent.CyclicBarrier;
 
 public class CyclicBarrierDemo {
     private static final CyclicBarrier BARRIER = new CyclicBarrier(3, new FerryBoat());
-    //Инициализируем барьер на три потока и таском, который будет выполняться, когда
-    //у барьера соберется три потока. После этого, они будут освобождены.
+    // Initialize a barrier for three threads and a task that will be executed
+    // when three threads have gathered at the barrier. After that, they will be released.
 
     public static void main(String[] args) throws InterruptedException {
         for (int i = 0; i < 9; i++) {
@@ -14,19 +14,19 @@ public class CyclicBarrierDemo {
         }
     }
 
-    //Таск, который будет выполняться при достижении сторонами барьера
+    // Task that will be executed when the sides reach the barrier
     public static class FerryBoat implements Runnable {
         @Override
         public void run() {
 //            try {
 //                Thread.sleep(500);
-                System.out.println("Паром переправил автомобили!");
+                System.out.println("The ferry transported the cars!");
 //            } catch (InterruptedException e) {
 //            }
         }
     }
 
-    //Стороны, которые будут достигать барьера
+    // Parties that will reach the barrier
     public static class Car implements Runnable {
         private int carNumber;
 
@@ -37,11 +37,11 @@ public class CyclicBarrierDemo {
         @Override
         public void run() {
             try {
-                System.out.printf("Автомобиль №%d подъехал к паромной переправе.\n", carNumber);
-                //Для указания потоку о том что он достиг барьера, нужно вызвать метод await()
-                //После этого данный поток блокируется, и ждет пока остальные стороны достигнут барьера
+                System.out.printf("Car #%d arrived.\n", carNumber);
+                // To indicate to a thread that it has reached the barrier, you need to call the await() method
+                // After this, this thread is blocked and waits for the other parties to reach the barrier
                 BARRIER.await();
-                System.out.printf("Автомобиль №%d продолжил движение.\n", carNumber);
+                System.out.printf("Car #%d continue moving.\n", carNumber);
             } catch (Exception e) {
             }
         }

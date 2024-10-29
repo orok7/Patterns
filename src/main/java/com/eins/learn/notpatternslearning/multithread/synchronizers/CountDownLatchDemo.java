@@ -3,9 +3,7 @@ package com.eins.learn.notpatternslearning.multithread.synchronizers;
 import java.util.concurrent.CountDownLatch;
 
 public class CountDownLatchDemo {
-    // Создаем CountDownLatch на 8 "условий"
     private static final CountDownLatch START = new CountDownLatch(8);
-    // Условная длина гоночной трассы
     private static final int trackLength = 500000;
 
     public static void main(String[] args) throws InterruptedException {
@@ -14,25 +12,23 @@ public class CountDownLatchDemo {
             Thread.sleep(1000);
         }
 
-        while (START.getCount() > 3) // Проверяем, собрались ли все автомобили
-            Thread.sleep(100); // у стартовой прямой. Если нет, ждем 100ms
+        while (START.getCount() > 3) //Check all cars are ready
+            Thread.sleep(100);
 
         Thread.sleep(1000);
-        System.out.println("На старт!");
-        START.countDown();// Команда дана, уменьшаем счетчик на 1
+        System.out.println("3!");
+        START.countDown();
         Thread.sleep(1000);
-        System.out.println("Внимание!");
-        START.countDown();// Команда дана, уменьшаем счетчик на 1
+        System.out.println("2!");
+        START.countDown();
         Thread.sleep(1000);
-        System.out.println("Марш!");
-        START.countDown();// Команда дана, уменьшаем счетчик на 1
-        // счетчик становится равным нулю, и все ожидающие потоки
-        // одновременно разблокируются
+        System.out.println("1, GO!");
+        START.countDown();
     }
 
     public static class Car implements Runnable {
         private int carNumber;
-        private int carSpeed;// считаем, что скорость автомобиля постоянная
+        private int carSpeed;
 
         public Car(int carNumber, int carSpeed) {
             this.carNumber = carNumber;
@@ -42,15 +38,12 @@ public class CountDownLatchDemo {
         @Override
         public void run() {
             try {
-                System.out.printf("Автомобиль №%d подъехал к стартовой прямой.\n", carNumber);
-                // Автомобиль подъехал к стартовой прямой - условие выполнено
-                // уменьшаем счетчик на 1
+                System.out.printf("Car #%d arrived.\n", carNumber);
                 START.countDown();
-                // метод await() блокирует поток, вызвавший его, до тех пор, пока
-                // счетчик CountDownLatch не станет равен 0
+                // await while countdown reach 0 
                 START.await();
-                Thread.sleep(trackLength / carSpeed);// ждем пока проедет трассу
-                System.out.printf("Автомобиль №%d финишировал!\n", carNumber);
+                Thread.sleep(trackLength / carSpeed);
+                System.out.printf("Car #%d finished!\n", carNumber);
             } catch (InterruptedException e) {
             }
         }

@@ -22,6 +22,7 @@ public class SharedFiFoQueue {
 	public void add(Object elem) throws InterruptedException {
 		lock.lock();
         while(current >= elems.length) {
+			System.out.println("-- full");
             isFull.await();
         }
 	
@@ -41,6 +42,7 @@ public class SharedFiFoQueue {
 		Object elem = null;
 		lock.lock();
 		while(current <= 0) {
+			System.out.println("-- empty");
             isEmpty.await();
         }
 	

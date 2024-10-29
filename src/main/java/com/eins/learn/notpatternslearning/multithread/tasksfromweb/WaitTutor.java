@@ -3,16 +3,6 @@ package com.eins.learn.notpatternslearning.multithread.tasksfromweb;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
-/**
- * Как сделать так, чтобы потоки вызывались по очереди?
- *
- * Часто необходимо упорядочить потоки, т.к. результат одного потока понадобится другому, и нужно дождаться, когда
- * первый поток сделает свою работу.
- *
- * Задача: добавьте еще один поток, который будет выводить в лог сообщения о значениях счетчика, кратных 10, например
- * 10, 20, 30... При этом такие сообщения должны выводиться после того, как все потоки преодолели кратность 10, но до
- * того, как какой-либо поток двинулся дальше.
- */
 public class WaitTutor {
     private final Object monitor = new Object();
     private int t1Counter = 0, t2Counter = 0;

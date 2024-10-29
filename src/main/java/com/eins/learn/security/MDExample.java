@@ -30,12 +30,12 @@ public class MDExample {
 
     private void MessageDidgestTest() {
         try {
-            // Инициализация объектов MessageDigest
+            // Initializing MessageDigest objects
             for (int i = 0; i < ALGO.length; i++)
                 MD[i] = MessageDigest.getInstance(ALGO[i]);
-            // Чтение файла
+            // Reading a file
             FileInputStream fis = new FileInputStream("report.txt");
-            // Массив данных
+            // data array
             byte[] dataBytes = new byte[fis.available()];
 
             int nread = 0;

@@ -2,18 +2,6 @@ package com.eins.learn.notpatternslearning.multithread.tasksfromweb;
 
 import com.eins.learn.notpatternslearning.multithread.try1.MyThread;
 
-/*
-        * Как остановить поток?
-        *
-        * Для того, чтобы прервать поток, мы можем использовать флаг
-        * shouldTerminate, который должен проверяться в цикле внутри handle().
-        * Если флаг становится true, мы просто выходим из цикла.
-        *
-        * Однако, тут могут быть проблемы, если от нашего потока зависят другие потоки.
-        * В настоящий момент поток t2 прерывается, и программа подвисает,
-        * т.к. поток t1 ждет второй поток и не может дождаться.
-        * Какие есть решения проблемы?
-        */
 public class WaitTerminateTutor {
     private final Object monitor = new Object();
     private int runningThreadNumber = 1;

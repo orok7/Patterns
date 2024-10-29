@@ -13,8 +13,10 @@ public class Cell<R, C, V> {
     private int colIndex;
     private V value;
 
-    public static <R, C, V> Cell<R, C, V> findByIndexes(List<Cell<R, C, V>> cells,int rowIndex, int colIndex) {
-        return cells.stream().filter(c -> c.colIndex == colIndex && c.rowIndex == rowIndex).findFirst().orElse(null);
+    public static <R, C, V> Cell<R, C, V> findByIndexes(List<Cell<R, C, V>> cells, int rowIndex, int colIndex) {
+        return cells.stream()
+                .filter(c -> c.colIndex == colIndex && c.rowIndex == rowIndex)
+                .findFirst().orElse(null);
     }
 
     @SuppressWarnings("unchecked")

@@ -4,41 +4,41 @@ import java.util.ArrayList;
 import java.util.concurrent.Phaser;
 
 public class PhaserDemo {
-    private static final Phaser PHASER = new Phaser(1);//Сразу регистрируем главный поток
-    //Фазы 0 и 6 - это автобусный парк, 1 - 5 остановки
+    private static final Phaser PHASER = new Phaser(1);//immediately register the main flow
+    //Phases 0 and 6 are the bus depot, stops 1 - 5
 
     public static void main(String[] args) throws InterruptedException {
         ArrayList<Passenger> passengers = new ArrayList<>();
 
-        for (int i = 1; i < 5; i++) {           //Сгенерируем пассажиров на остановках
+        for (int i = 1; i < 5; i++) {           //Generate passengers at stops
             if ((int) (Math.random() * 2) > 0)
-                passengers.add(new Passenger(i, i + 1));//Этот пассажир выходит на следующей
+                passengers.add(new Passenger(i, i + 1));//This passenger gets off at the next one.
 
             if ((int) (Math.random() * 2) > 0)
-                passengers.add(new Passenger(i, 5));    //Этот пассажир выходит на конечной
+                passengers.add(new Passenger(i, 5));    //This passenger gets off at the final stop.
         }
 
         for (int i = 0; i < 11; i++) {
             switch (i) {
             case 0:
-                System.out.println("Автобус выехал из парка.");
-                PHASER.arriveAndAwaitAdvance();//В фазе 0 всего 1 участник - автобус
+                System.out.println("The bus left the park.");
+                PHASER.arriveAndAwaitAdvance();//In phase 0 there is only 1 participant - a bus
                 break;
             case 10:
-                System.out.println("Автобус уехал в парк.");
-                PHASER.arriveAndDeregister();//Снимаем главный поток, ломаем барьер
+                System.out.println("The bus left for the park.");
+                PHASER.arriveAndDeregister();//remove the main flow, break the barrier
                 break;
             default:
                 int currentBusStop = PHASER.getPhase();
-                System.out.println("Остановка № " + currentBusStop);
+                System.out.println("Stop # " + currentBusStop);
 
-                for (Passenger p : passengers)          //Проверяем, есть ли пассажиры на остановке
+                for (Passenger p : passengers)          //Checking if there are passengers at the stop
                     if (p.departure == currentBusStop) {
-                        PHASER.register();//Регистрируем поток, который будет участвовать в фазах
-                        p.start();        // и запускаем
+                        PHASER.register();// register the flow that will participate in the phases
+                        p.start();        // and launch
                     }
 
-                PHASER.arriveAndAwaitAdvance();//Сообщаем о своей готовности
+                PHASER.arriveAndAwaitAdvance();// notify about readiness
             }
         }
     }
@@ -50,28 +50,28 @@ public class PhaserDemo {
         public Passenger(int departure, int destination) {
             this.departure = departure;
             this.destination = destination;
-            System.out.println(this + " ждёт на остановке № " + this.departure);
+            System.out.println(this + " wait on stop # " + this.departure);
         }
 
         @Override
         public void run() {
             try {
-                System.out.println(this + " сел в автобус.");
+                System.out.println(this + " got on the bus.");
 
-                while (PHASER.getPhase() < destination) { //Пока автобус не приедет на нужную остановку(фазу)
-                    PHASER.arriveAndAwaitAdvance();     //заявляем в каждой фазе о готовности и ждем
+                while (PHASER.getPhase() < destination) { //Until the bus arrives at the required stop (phase)
+                    PHASER.arriveAndAwaitAdvance();     //declare our readiness at each stage and wait
                 }
 
                 Thread.sleep(1000);
-                System.out.println(this + " покинул автобус.");
-                PHASER.arriveAndDeregister();   //Отменяем регистрацию на нужной фазе
+                System.out.println(this + " left the bus.");
+                PHASER.arriveAndDeregister();   //cancel registration at the required phase
             } catch (InterruptedException e) {
             }
         }
 
         @Override
         public String toString() {
-            return "Пассажир{" + departure + " -> " + destination + '}';
+            return "Passenger{" + departure + " -> " + destination + '}';
         }
     }
 }

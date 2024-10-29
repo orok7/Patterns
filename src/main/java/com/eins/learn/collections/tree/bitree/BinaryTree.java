@@ -31,7 +31,7 @@ public class BinaryTree<T> {
 
     public boolean remove(T element) {
         List<Node> removed = new ArrayList<>();
-        walkAroundTree(root, node -> {
+        walkThroughTree(root, node -> {
             if (node.value.equals(element)) {
                 removed.add(node);
             }
@@ -45,7 +45,7 @@ public class BinaryTree<T> {
     }
 
     public void printTree() {
-        walkAroundTree(root, node -> System.out.print(node.value + " "));
+        walkThroughTree(root, node -> System.out.print(node.value + " "));
         System.out.println();
     }
 
@@ -60,7 +60,7 @@ public class BinaryTree<T> {
 
     public List<T> toList() {
         List<T> list = new ArrayList<>();
-        walkAroundTree(root, node -> list.add(node.value));
+        walkThroughTree(root, node -> list.add(node.value));
         return list;
     }
 
@@ -71,17 +71,17 @@ public class BinaryTree<T> {
         }
         T[] array = (T[]) Array.newInstance(root.value.getClass(), size);
         final int[] index = { 0 };
-        walkAroundTree(root, node -> array[index[0]++] = node.value);
+        walkThroughTree(root, node -> array[index[0]++] = node.value);
         return array;
     }
 
-    private void walkAroundTree(Node current, Consumer<Node> consumer) {
+    private void walkThroughTree(Node current, Consumer<Node> consumer) {
         if (current.hasLeft()) {
-            walkAroundTree(current.left, consumer);
+            walkThroughTree(current.left, consumer);
         }
         consumer.accept(current);
         if (current.hasRight()) {
-            walkAroundTree(current.right, consumer);
+            walkThroughTree(current.right, consumer);
         }
     }
 
@@ -111,7 +111,6 @@ public class BinaryTree<T> {
                 removed.top.left = removed.right;
             } else {
                 removed.top.right = removed.right;
-                ;
             }
         } else {
             if (removed.top.hasLeft() && removed.top.left.equals(removed)) {

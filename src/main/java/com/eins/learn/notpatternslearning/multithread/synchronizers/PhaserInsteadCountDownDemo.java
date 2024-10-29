@@ -2,7 +2,7 @@ package com.eins.learn.notpatternslearning.multithread.synchronizers;
 
 import java.util.concurrent.Phaser;
 
-public class PhaserInsteadCoutDownDemo {
+public class PhaserInsteadCountDownDemo {
     private static final Phaser START = new Phaser(8);
     private static final int trackLength = 500000;
 
@@ -11,19 +11,19 @@ public class PhaserInsteadCoutDownDemo {
             new Thread(new Car(i, (int) (Math.random() * 100 + 50))).start();
         }
 
-        while (START.getRegisteredParties() > 3) //Проверяем, собрались ли все автомобили
-            Thread.sleep(100);                  //у стартовой прямой. Если нет, ждем 100ms
+        while (START.getRegisteredParties() > 3) //Check all cars are ready
+            Thread.sleep(100);                  
 
         Thread.sleep(100);
-        System.out.println("На старт!");
+        System.out.println("3");
         START.arriveAndDeregister();
 
         Thread.sleep(100);
-        System.out.println("Внимание!");
+        System.out.println("2");
         START.arriveAndDeregister();
 
         Thread.sleep(100);
-        System.out.println("Марш!");
+        System.out.println("1, GO");
         START.arriveAndDeregister();
     }
 
@@ -39,11 +39,11 @@ public class PhaserInsteadCoutDownDemo {
         @Override
         public void run() {
             try {
-                System.out.printf("Автомобиль №%d подъехал к стартовой прямой.\n", carNumber);
+                System.out.printf("Car #%d arrived.\n", carNumber);
                 START.arriveAndDeregister();
                 START.awaitAdvance(0);
                 Thread.sleep(trackLength / carSpeed);
-                System.out.printf("Автомобиль №%d финишировал!\n", carNumber);
+                System.out.printf("Car #%d finished.\n", carNumber);
             } catch (InterruptedException e) {
             }
         }

@@ -6,11 +6,11 @@ public class ExchangerDemo {
     private static final Exchanger<String> EXCHANGER = new Exchanger<>();
 
     public static void main(String[] args) throws InterruptedException {
-        String[] p1 = new String[] { "{посылка A->D}", "{посылка A->C}" };// Формируем груз для 1-го грузовика
-        String[] p2 = new String[] { "{посылка B->C}", "{посылка B->D}" };// Формируем груз для 2-го грузовика
-        new Thread(new Truck(1, "A", "D", p1)).start();// Отправляем 1-й грузовик из А в D
+        String[] p1 = new String[] { "{parcel A->D}", "{parcel A->C}" };// form the cargo for the 1st truck
+        String[] p2 = new String[] { "{parcel B->C}", "{parcel B->D}" };// form the cargo for the 2st truck
+        new Thread(new Truck(1, "A", "D", p1)).start();// 1st truck from А to D
         Thread.sleep(100);
-        new Thread(new Truck(2, "B", "C", p2)).start();// Отправляем 2-й грузовик из В в С
+        new Thread(new Truck(2, "B", "C", p2)).start();// 2nd truck from В to С
     }
 
     public static class Truck implements Runnable {
@@ -29,15 +29,15 @@ public class ExchangerDemo {
         @Override
         public void run() {
             try {
-                System.out.printf("В грузовик №%d погрузили: %s и %s.\n", number, parcels[0], parcels[1]);
-                System.out.printf("Грузовик №%d выехал из пункта %s в пункт %s.\n", number, dep, dest);
+                System.out.printf("Truck #%d was loaded: %s and %s.\n", number, parcels[0], parcels[1]);
+                System.out.printf("Truck #%d departed %s to %s.\n", number, dep, dest);
                 Thread.sleep(1000 + (long) (Math.random() * 5000));
-                System.out.printf("Грузовик №%d приехал в пункт Е.\n", number);
-                parcels[1] = EXCHANGER.exchange(parcels[1]);// При вызове exchange() поток блокируется и ждет
-                // пока другой поток вызовет exchange(), после этого произойдет обмен посылками
-                System.out.printf("В грузовик №%d переместили посылку для пункта %s.\n", number, dest);
+                System.out.printf("Truck #%d arrived.\n", number);
+                parcels[1] = EXCHANGER.exchange(parcels[1]);// When calling exchange(), the thread blocks and waits
+                // until another thread calls exchange(), after which the exchange of parcels will occur
+                System.out.printf("Truck #%d was loaded %s.\n", number, dest);
                 Thread.sleep(1000 + (long) (Math.random() * 5000));
-                System.out.printf("Грузовик №%d приехал в %s и доставил: %s и %s.\n", number, dest, parcels[0],
+                System.out.printf("Truck #%d arrived to %s: %s and %s.\n", number, dest, parcels[0],
                         parcels[1]);
             } catch (InterruptedException ignored) {
             }

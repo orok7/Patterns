@@ -3,10 +3,10 @@ package com.eins.learn.notpatternslearning.multithread.synchronizers;
 import java.util.concurrent.Semaphore;
 
 public class SemaphoreDemo {
-    //Парковочное место занято - true, свободно - false
+    // Parking space occupied - true, free - false
     private static final boolean[] PARKING_PLACES = new boolean[5];
-    //Устанавливаем флаг "справедливый", в таком случае метод
-    //aсquire() будет раздавать разрешения в порядке очереди
+    // We set the "fair" flag, in which case the
+    // aсquire() method will distribute permissions in order of the queue
     private static final Semaphore SEMAPHORE = new Semaphore(5, true);
 
     public static void main(String[] args) throws InterruptedException {
@@ -25,35 +25,34 @@ public class SemaphoreDemo {
 
         @Override
         public void run() {
-            System.out.printf("Автомобиль №%d подъехал к парковке.\n", carNumber);
+            System.out.printf("Car #%d pulled up to the parking lot.\n", carNumber);
             try {
-                //acquire() запрашивает доступ к следующему за вызовом этого метода блоку кода,
-                //если доступ не разрешен, поток вызвавший этот метод блокируется до тех пор,
-                //пока семафор не разрешит доступ
+                // acquire() requests access to the block of code following the call to this method,
+                // if access is not granted, the thread calling this method is blocked until the semaphore grants access
                 SEMAPHORE.acquire();
 
                 int parkingNumber = -1;
 
-                //Ищем свободное место и паркуемся
+                // look for a free space and park.
                 synchronized (PARKING_PLACES){
                     for (int i = 0; i < 5; i++)
-                        if (!PARKING_PLACES[i]) {      //Если место свободно
-                            PARKING_PLACES[i] = true;  //занимаем его
-                            parkingNumber = i;         //Наличие свободного места, гарантирует семафор
-                            System.out.printf("Автомобиль №%d припарковался на месте %d.\n", carNumber, i);
+                        if (!PARKING_PLACES[i]) {      // if the space is free
+                            PARKING_PLACES[i] = true;  // occupy it
+                            parkingNumber = i;         // Availability of free space is guaranteed by a semaphore
+                            System.out.printf("Car #%d parked in place %d.\n", carNumber, i);
                             break;
                         }
                 }
 
-                Thread.sleep(5000);       //Уходим за покупками, к примеру
+                Thread.sleep(5000);
 
                 synchronized (PARKING_PLACES) {
-                    PARKING_PLACES[parkingNumber] = false;//Освобождаем место
+                    PARKING_PLACES[parkingNumber] = false;// free space
                 }
 
-                //release(), напротив, освобождает ресурс
+                //release(), on the other hand, frees the resource
                 SEMAPHORE.release();
-                System.out.printf("Автомобиль №%d покинул парковку.\n", carNumber);
+                System.out.printf("Car #%d left the parking lot.\n", carNumber);
             } catch (InterruptedException e) {
             }
         }
